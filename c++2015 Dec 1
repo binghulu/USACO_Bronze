@@ -1,0 +1,53 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ofstream fout("paint.out");
+    ifstream fin("paint.in");
+
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+    fin >> a >> b >> c >> d;
+    /*
+    int totalLength;
+    if (c > b || d < a)
+        totalLength = d-c+b-a;
+    else if (a <= c && b >= d)
+        totalLength = b-a;
+    else if (c < a && d > b)
+        totalLength = d-c;
+    else if (a < c)
+        totalLength = d-a;
+    else if (c < a)
+        totalLength = b-c;
+    cout << totalLength;
+    */
+    
+    int total = b-a+d-c;
+    int starts = max(a, c);
+    int ends = min(b, d);
+    int overlap = (ends - starts > 0) ? ends - starts : 0;
+    total -= overlap;
+
+    /*
+    int total = b-a+d-c;
+    int leftMin = min(a, c);
+    int rightMax = max(b, d);
+    int temp = rightMax - leftMin;
+    int overlap = (total > temp) ? total - temp : 0;
+    total -= overlap;
+    */
+
+    /*
+    int nonoverlap;
+    nonoverlap = (y2 < x1) ? x1-y2 : ((y1 < x2) ? x2-y1 : 0);
+    int total = rightMax - leftMin - nonoverlap;
+    */
+
+    cout << total;
+    fout << total;
+}
+
+    fout << totalLength;
+}
