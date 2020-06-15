@@ -1,0 +1,20 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ofstream fout("promote.out");
+    ifstream fin("promote.in");
+
+    int b1, b2, s1, s2, g1, g2, p1, p2;
+    cin >> b1 >> b2 >> s1 >> s2 >> g1 >> g2 >> p1 >> p2;
+    fin >> b1 >> b2 >> s1 >> s2 >> g1 >> g2 >> p1 >> p2;
+
+    int bs, sg, gp;
+    gp = p2 - p1;
+    sg = g2 - g1 + gp;          // or  + p2 - p1
+    bs = s2 - s1 + sg;          // or  + g2 - g1 + p2 - p1
+
+    cout << bs << endl << sg << endl << gp;
+    fout << bs << endl << sg << endl << gp;
+}
