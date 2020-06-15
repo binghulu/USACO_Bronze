@@ -1,0 +1,44 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("race.in");
+    ofstream fout("race.out");
+    int K, N;
+    cin >> K >> N;
+    fin >> K >> N;
+    int x, distance, number, speed;
+    for (int i = 0; i < N; i++){
+        cin >> x;
+        fin >> x;
+        number = 1;
+        distance = K-1;
+        if (distance == 0) continue;
+        speed = 1;
+        while (distance >= 0){
+            //cout << "speed = " << speed << " " <<  (speed+x+1)*(speed-x+2)/2 << " " << (speed+x+2)*(speed-x+3)/2 << endl;
+            if (distance >= (speed+x+1)*(speed-x+2)/2 && distance < (speed+x+2)*(speed-x+3)/2){
+                number += speed+3-x;
+                if (distance == (speed+x+1)*(speed-x+2)/2)
+                    number--;
+                break;
+            }
+            else if (distance < (speed+x+1)*(speed-x+2)/2 && distance >= (speed+x)*(speed-x+1)/2){
+                number += speed+2-x;
+                if (distance == (speed+x)*(speed-x+1)/2)
+                    number--;
+                break;
+            }
+            else{
+                speed++;
+                //cout << "speed = " << speed << " ";
+                distance -= speed;
+                //cout << "distance = " << distance << endl;
+                number++;
+            }
+        }
+        cout << number << endl;
+        fout << number << endl;
+    }
+}
