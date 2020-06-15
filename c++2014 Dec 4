@@ -1,0 +1,45 @@
+#include <iostream>
+#include <fstream>
+#include <math.h>
+#include <algorithm>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main()
+{
+    ofstream fout("learning.out");
+    ifstream fin("learning.in");
+
+    int N, A, B;
+    fin >> N >> A >> B;
+    vector < pair<int, string> > cow;
+
+    int weight;
+    string spot;
+    for (int i = 0; i < N; i++){
+        fin >> spot >> weight;
+        cow.push_back(make_pair(weight, spot));
+    }
+    sort(cow.begin(), cow.end());
+
+    int spots = 0;
+    int startPos, endPos;
+    for (int i = 0; i < N; i++){
+        if (cow[i].second == "S"){
+            if (i == 0) startPos = A;                                                               // If it is the first cow, then it must start from A
+            else if (cow[i-1].second != "S" && (cow[i-1].first + cow[i].first) % 2 == 0){           // If the previous cow is not spotted and there is an actual middle, the the middle must be accounted as spotted
+                    startPos = (cow[i-1].first + cow[i].first)/2;                                   // The Start would be the average of the two because it wold be the exact middle
+            }
+            else startPos = (cow[i-1].first + cow[i].first)/2 + 1;                                  // Otherwise, we need the one above the middle, whether it be the exact middle or rounded down
+            if (startPos < A) startPos = A;                                                         // If the start is before A (the first cow), then the start Pos must start from A
+
+            if (i == N-1) endPos = B;
+            else endPos = (cow[i].first+cow[i+1].first)/2;
+            if (endPos > B) endPos = B;
+
+            if (endPos - startPos >= 0) spots += endPos - startPos + 1;
+        }
+    }
+    fout << spots;
+}
