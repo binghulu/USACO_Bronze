@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("mowing.in");
+    ofstream fout("mowing.out");
+
+    int xC, yC;
+
+    int currentX = 1000, currentY = 1000;
+    int time = 0;
+    int path[2001][2001];
+
+    for (int i = 0; i < 2001; i++){
+        for (int j = 0; j < 2001; j++){
+            path[i][j] = -1;
+        }
+    }
+    // When we go through a path we want to replace -1 with the time that it went through it
+    path[1000][1000] = 0;
+    int maxValue = 1001;
+    int N;
+    cin >> N;
+
+    int X, Y;
+    string direction;
+    int steps;
+    for (int i = 0; i < N; i++){
+        cin >> direction;
+        X = 0, Y = 0;
+        if (direction == "N") X = -1;
+        else if (direction == "S") X = 1;
+        else if (direction == "E") Y = 1;
+        else Y = -1;
+        cin >> steps;
+        for (int j = 0; j < steps; j++){
+            currentX += X;
+            currentY += Y;
+            time++;
+            if ((path[currentX][currentY] > -1) && (time - path[currentX][currentY] < maxValue)) maxValue = time - path[currentX][currentY];
+            path[currentX][currentY] = time;
+        }
+    }
+    if (maxValue == 1001) maxValue = -1;
+    cout << maxValue << endl;
+    
+}
