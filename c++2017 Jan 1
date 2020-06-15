@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int main(){
+    ifstream fin("notlast.in");
+    ofstream fout("notlast.out");
+
+    int N;
+    cin >> N;
+    fin >> N;
+
+    vector<pair<int, string>> cows;
+    cows.push_back({0, "Bessie"});
+    cows.push_back({0, "Elsie"});
+    cows.push_back({0, "Daisy"});
+    cows.push_back({0, "Gertie"});
+    cows.push_back({0, "Annabelle"});
+    cows.push_back({0, "Maggie"});
+    cows.push_back({0, "Henrietta"});
+
+    string name;
+    int value;
+    for (int i = 0; i < N; i++){
+        cin >> name >> value;
+        fin >> name >> value;
+        for (int i = 0; i < 7; i++) if (cows[i].second == name) cows[i].first += value;
+    }
+    sort(cows.begin(), cows.end());
+
+    int smallest = cows[0].first;
+    string answer = "";
+    for (int i = 0; i < 7; i++){
+        if (cows[i].first != smallest){
+            answer = cows[i].second;
+            if (cows[i+1].first == cows[i].first) answer = "Tie";
+            break;
+        }
+    }
+    if (answer == "") answer = "Tie";
+    cout << answer << endl;
+    fout << answer << endl;
+}
