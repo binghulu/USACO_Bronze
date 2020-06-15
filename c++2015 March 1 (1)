@@ -1,0 +1,103 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <map>
+using namespace std;
+
+int main(){
+    ofstream fout("moocrypt.out");
+    ifstream fin("moocrypt.in");
+
+    map<string, int> encryptions;
+    int r, c;
+    fin >> r >> c;
+    string temp1;
+    char puzzle[50][50];
+    for (int i = 0; i < r; i++){
+        fin >> temp1;
+        for (int j = 0; j < temp1.length(); j++){
+            puzzle[i][j] = temp1[j];
+        }
+    }
+    string temp;
+    for (int i = 0; i < r; i++){
+        for (int j = 0; j < c; j++){
+            if (puzzle[i][j] == 'M') continue;
+
+            temp = puzzle[i][j];
+            if (j <= c-3){
+                if ((puzzle[i][j+1] != 'O') && (puzzle[i][j+1] == puzzle[i][j+2]) && (puzzle[i][j] != puzzle[i][j+1])){
+                    temp += puzzle[i][j+1];
+                    encryptions[temp] += 1;
+                }
+            }
+
+            temp = puzzle[i][j];
+            if (j >= 2){
+                if ((puzzle[i][j-1] != 'O') && (puzzle[i][j-1] == puzzle[i][j-2]) && (puzzle[i][j] != puzzle[i][j-1])){
+                    temp += puzzle[i][j-1];
+                    encryptions[temp] += 1;
+                }
+            }
+
+            temp = puzzle[i][j];
+            if (i <= r-3){
+                if ((puzzle[i+1][j] != 'O') && (puzzle[i+1][j] == puzzle[i+2][j]) && (puzzle[i][j] != puzzle[i+1][j])){
+                    temp += puzzle[i+1][j];
+                    encryptions[temp] += 1;
+                }
+            }
+
+            temp = puzzle[i][j];
+            if (i >= 2){
+                if ((puzzle[i-1][j] != 'O') && (puzzle[i-1][j] == puzzle[i-2][j]) && (puzzle[i][j] != puzzle[i-1][j])){
+                    temp += puzzle[i-1][j];
+                    encryptions[temp] += 1;
+                }
+            }
+
+            temp = puzzle[i][j];
+            if (i <= r-3 && j <= c-3){
+                if ((puzzle[i+1][j+1] != 'O') && (puzzle[i+1][j+1] == puzzle[i+2][j+2]) && (puzzle[i][j] != puzzle[i+1][j+1])){
+                    temp += puzzle[i+1][j+1];
+                    encryptions[temp] += 1;
+                }
+            }
+
+            temp = puzzle[i][j];
+            if (i >= 2 && j >= 2){
+                if ((puzzle[i-1][j-1] != 'O') && (puzzle[i-1][j-1] == puzzle[i-2][j-2]) && (puzzle[i][j] != puzzle[i-1][j-1])){
+                    temp += puzzle[i-1][j-1];
+                    encryptions[temp] += 1;
+                }
+            }
+
+            temp = puzzle[i][j];
+            if (i <= r-3 && j >= 2){
+                if ((puzzle[i+1][j-1] != 'O') && (puzzle[i+1][j-1] == puzzle[i+2][j-2]) && (puzzle[i][j] != puzzle[i+1][j-1])){
+                    temp += puzzle[i+1][j-1];
+                    encryptions[temp] += 1;
+                }
+            }
+
+            temp = puzzle[i][j];
+            if (i >= 2 && j <= j-3){
+                if ((puzzle[i-1][j+1] != 'O') && (puzzle[i-1][j+1] == puzzle[i-2][j+2]) && (puzzle[i][j] != puzzle[i-1][j+1])){
+                    temp += puzzle[i-1][j+1];
+                    encryptions[temp] += 1;
+                }
+            }
+        }
+    }
+    int largest = 0;
+    string pair1;
+    for (map<string, int>::iterator it = encryptions.begin(); it != encryptions.end(); ++it){
+        cout << it->first << " == " << it->second << endl;
+        if (it->second >= largest){
+            largest = it->second;
+            pair1 = it->first;
+        }
+    }
+    cout << pair1 << " ";
+    fout << largest;
+}
