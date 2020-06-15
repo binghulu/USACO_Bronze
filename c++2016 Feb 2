@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("cbarn.in");
+    ofstream fout("cbarn.out");
+
+    int N;
+    cin >> N;
+    fin >> N;
+
+    int cows[N];
+    for (int i = 0; i < N; i++){
+        cin >> cows[i];
+        fin >> cows[i];
+    }
+
+    int smallest = 1000000000;
+    for (int i = 0; i < N; i++){
+        int dis = 0;
+        for (int j = 0; j < N; j++){
+            dis += j*cows[(i+j)%N];
+        }
+        if (dis < smallest) smallest = dis;
+    }
+    cout << smallest;
+    fout << smallest;
+}
