@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int main(){
+    ifstream fin("balancing.in");
+    ofstream fout("balancing.out");
+
+    int N, B;
+    cin >> N >> B;
+    fin >> N >> B;
+
+    int xCor[N], yCor[N];
+    for (int i = 0; i < N; i++){
+        cin >> xCor[i] >> yCor[i];
+        fin >> xCor[i] >> yCor[i];
+    }
+    int maxRegions = 1000000000;
+    int worst;
+    int q1, q2, q3, q4;
+
+    int tempX, tempY;
+
+    for (int i = 0; i < N; i++){
+        for (int j = 0; j < N; j++){
+            tempX = xCor[i] + 1;
+            tempY = yCor[j] + 1;
+            q1 = 0, q2 = 0, q3 = 0, q4 = 0;
+            for (int k = 0; k < N; k++){
+                if (xCor[k] > tempX && yCor[k] > tempY) q1++;
+                else if (xCor[k] < tempX && yCor[k] > tempY) q2++;
+                else if (xCor[k] < tempX && yCor[k] < tempY) q3++;
+                else q4++;
+            }
+            worst = 0;
+            if (q1 > worst) worst = q1;
+            if (q2 > worst) worst = q2;
+            if (q3 > worst) worst = q3;
+            if (q4 > worst) worst = q4;
+            if (worst < maxRegions) maxRegions = worst;
+        }
+    }
+    cout << maxRegions << endl;
+    fout << maxRegions << endl;
+}
