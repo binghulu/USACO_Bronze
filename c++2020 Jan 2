@@ -1,0 +1,69 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int main(){
+    ifstream fin("photo.in");
+    ofstream fout("photo.out");
+    int N;
+    cin >> N;
+    fin >> N;
+    int sums[N-1];
+    int numbers[N];
+    for (int i = 0; i < N-1; i++){
+        cin >> sums[i];
+        fin >> sums[i];
+    }
+    int work = 1;
+    for (int i = 1; i < sums[0]; i++){
+        int current;
+        int next;
+        vector<int> values;
+        work = 1;
+        for (int j = 0; j < N; j++){
+            numbers[j] = 1;
+        }
+        current = i;
+        next = sums[0] - current;
+        if (next > N || next < 0 || next == current){
+            work = 0;
+            continue;
+        }
+        //cout << endl << "i = " << i << " " << current << " " << next;
+        numbers[current-1] = 0;
+        numbers[next-1] = 0;
+        values.push_back(current);
+        values.push_back(next);
+        for (int m = 0; m < N-1; m++){
+            cout << sums[m] << " ";
+        }
+        cout << endl;
+        current = next;
+        for (int j = 1; j < N-1; j++){
+            cout << "i = " << i << " sum " << sums[j] << " current " << current << " ";
+            next = sums[j] - current;
+            cout << next << endl;
+            if (numbers[next-1] == 0 || next < 0 || next > N){
+                work = 0;
+                break;
+            }
+            else numbers[next-1] = 0;
+            values.push_back(next);
+            current = next;
+        }
+        if (work == 1){
+            cout << values[0];
+            fout << values[0];
+            for (int j = 1; j < N; j++){
+                cout << " " << values[j];
+                fout << " " << values[j];
+            }
+            return 0;
+        }
+    }
+}
+/*
+11
+21 13 7 11 16 10 3 8 14 13
+*/
