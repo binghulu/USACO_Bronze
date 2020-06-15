@@ -1,0 +1,39 @@
+#include <iostream>
+#include <fstream>
+#include <stack>
+using namespace std;
+
+int main(){
+    ifstream fin("circlecross.in");
+    ofstream fout("circlecross.out");
+
+    string path;
+    cin >> path;
+    fin >> path;
+    stack<char> cows;
+    stack<char> temp;
+    int letters[26];
+
+    int crosses = 0;
+    for (int i = 0; i < 26; i++) letters[i] = 0;
+    for (int i = 0; i < 52; i++){
+        if (letters[path[i]-'A'] == 0){
+            cows.push(path[i]);
+            letters[path[i]-'A']++;
+        }
+        else{
+            while (cows.top() != path[i]){
+                crosses++;
+                temp.push(cows.top());
+                cows.pop();
+            }
+            cows.pop();
+            while (!temp.empty()){
+                cows.push(temp.top());
+                temp.pop();
+            }
+        }
+    }
+    cout << crosses << endl;
+    fout << crosses << endl;
+}
