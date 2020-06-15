@@ -1,0 +1,67 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <map>
+using namespace std;
+
+int r, c;
+char puzzle[50][50];
+
+int row[] = {-1, -1, -1, 0, 1, 1, 1, 0};
+int column[] = {-1, 0, 1, 1, 1, 0, -1, -1};
+
+char checkBounds(int n, int m){
+    cout << "n= " << n << " m= " << m << endl;
+    if (n < 0 || n >= r || m < 0 || m >= c) {
+        return '.';
+    }
+    return puzzle[n][m];
+}
+
+
+int main(){
+    ofstream fout("moocrypt.out");
+    ifstream fin("moocrypt.in");
+
+    map<string, int> encryptions;
+    int r, c;
+    cin >> r >> c;
+    string temp1;
+    for (int i = 0; i < r; i++){
+        cin >> temp1;
+        for (int j = 0; j < temp1.length(); j++){
+            puzzle[i][j] = temp1[j];
+        }
+    }
+
+    string temp;
+    for (int i = 0; i < r; i++){
+        for (int j = 0; j < c; j++){
+            if (puzzle[i][j] == 'M') continue;
+
+            for (int k = 0; k < 8; k++){
+                temp = puzzle[i][j];
+                int trow = i + 1 * row[k];
+                int tcolumn = j + 1 * column[k];
+                cout << "When k= " << k << " " << trow << " " << tcolumn << " and the checkBounds gives " <<  checkBounds(trow, tcolumn) << endl;
+                if (checkBounds(trow, tcolumn) == 'O' || checkBounds(trow, tcolumn) == puzzle[i][j]) continue;
+                cout << checkBounds(trow, tcolumn) << " " << checkBounds(i + 2 * row[k], j + 2 * column[k]) << endl;
+                if ((checkBounds(trow, tcolumn) != '.') && (checkBounds(trow, tcolumn) == checkBounds(i + 2 * row[k], j + 2 * column[k]))){
+                    cout<< "work?";
+                    temp += puzzle[trow][tcolumn];
+                    encryptions[temp] += 1;
+                }
+            }
+        }
+    }
+
+    int largest = 0;
+    string pair1;
+    for (map<string, int>::iterator it = encryptions.begin(); it != encryptions.end(); ++it){
+        if (it->second >= largest){
+            largest = it->second;
+            pair1 = it->first;
+        }
+    }
+    cout << largest;
+}
