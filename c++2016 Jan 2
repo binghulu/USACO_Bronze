@@ -1,0 +1,104 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ofstream fout("angry.out");
+    ifstream fin("angry.in");
+
+
+    int N;
+    cin >> N;
+    fin >> N;
+    vector<int> balePos;
+
+    int j;
+    for (int i = 0; i < N; i++) {
+        cin >> j;
+        fin >> j;
+        balePos.push_back(j);
+    }
+    sort(balePos.begin(), balePos.end());
+
+    int index, temp;
+    int explosion, leftCount, rightCount, baleCount;
+    int maxCount = 0;
+
+    for (int i = 0; i < N; i++) {
+        explosion = 1;
+        leftCount = 0, rightCount = 0;
+
+        // Left Side
+        temp = i;
+        if (i > 0) index = i-1;
+        else index = -1;
+        while (index >= 0) {
+            // If the index is the edge case
+            if (index == 0) {
+                // If it works
+                if (balePos[temp] - balePos[index] <= explosion) leftCount = i-index;
+                // If it doesn't
+                else leftCount = i-(index+1);
+                cout << i << " (a): " << balePos[index] << " leftCount = " << leftCount << endl;
+                break;
+            }
+            if (balePos[temp] - balePos[index] > explosion) {
+                // If its not the one right after temp (Otherwise that means that there are no more explosions after it)
+                if (index != temp-1) {
+                    cout << "i=" << i << " index = " << index << " temp = " << temp << endl;
+                    temp = index+1;
+                    explosion++;
+                }
+                // If it is the one right after temp
+                else {
+                    leftCount = i-temp;
+                    cout << i << " (a): " << balePos[index] << " leftCount = " << leftCount << endl;
+                    break;
+                }
+            }
+            else index--;
+        }
+        cout << "leftCount = " << rightCount << endl;
+
+        // Right Side
+        temp = i;
+        if (i < N-1) index = i+1;
+        else index = N;
+        explosion = 1;
+        while (index <= N-1){
+            // If it is the edge case
+            if (index == N-1){
+                // If it works
+                if (balePos[index] - balePos[temp] <= explosion) rightCount = index-i;
+                // If it doesn't
+                else rightCount = (index-1)-i;
+                cout << i << " (b): " << balePos[index] << " rightCount = " << rightCount << endl;
+                break;
+            }
+            if (balePos[index] - balePos[temp] > explosion) {
+                // If it isn't the one right after temp
+                if (index != temp+1) {
+                    cout << "i=" << i << " index = " << index << " temp = " << temp << " explosion = " << explosion << endl;
+                    temp = index-1;
+                    explosion++;
+                }
+                // If it is
+                else {
+                    rightCount = temp-i;
+                    cout << i << " (b): " << balePos[index] << " rightCount = " << rightCount << endl;
+                    break;
+                }
+            }
+            else index++;
+        }
+        cout << "rightCount = " << rightCount << endl;
+        baleCount = rightCount+leftCount+1;
+        cout << "baleCount = " << baleCount << endl;
+        if (baleCount >= maxCount) maxCount = baleCount;
+
+    }
+    cout << maxCount;
+    fout << maxCount;
+}
