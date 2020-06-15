@@ -1,0 +1,178 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int cowpopularity[8][3];
+int n;
+vector<int> cows;
+
+int recursion(int i){
+    bool found = false;
+    for (int j = 0; j < cows.size(); j++){
+        if (cows[j] == i){
+            found = true;
+            if (cowpopularity[i][0] == 1) break;
+            else if (cowpopularity[i][0] == 2){
+                cows.insert(cows.begin()+j+1, max(cowpopularity[i][1], cowpopularity[i][2]));
+            }
+        }
+    }
+    if (found == false){
+        if (cowpopularity[i][0] == 0) cows.push_back(i);
+        else if (cowpopularity[i][0] == 1){
+            cows.push_back(i);
+            cows.push_back(cowpopularity[i][1]);
+            if (cowpopularity[cowpopularity[i][1]][0] == 2) recursion(cowpopularity[i][1]);
+        }
+    }
+    return 0;
+}
+
+int main(){
+    ifstream fin("lineup.in");
+    ofstream fout("lineup.out");
+
+    for (int i = 0; i < 8; i++){
+        for (int j = 0; j < 3; j++){
+            cowpopularity[i][j] = 0;
+        }
+    }
+    cin >> n;
+    fin >> n;
+    string word;
+    int chosen;
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < 6; j++){
+            cin >> word;
+            fin >> word;
+            if (j == 0){
+                if (word == "Beatrice"){
+                    cowpopularity[0][0]++;
+                    chosen = 0;
+                }
+                else if (word == "Belinda"){
+                    cowpopularity[1][0]++;
+                    chosen = 1;
+                }
+                else if (word == "Bella"){
+                    cowpopularity[2][0]++;
+                    chosen = 2;
+                }
+                else if (word == "Bessie"){
+                    cowpopularity[3][0]++;
+                    chosen = 3;
+                }
+                else if (word == "Betsy"){
+                    cowpopularity[4][0]++;
+                    chosen = 4;
+                }
+                else if (word == "Blue"){
+                    cowpopularity[5][0]++;
+                    chosen = 5;
+                }
+                else if (word == "Buttercup"){
+                    cowpopularity[6][0]++;
+                    chosen = 6;
+                }
+                else if (word == "Sue"){
+                    cowpopularity[7][0]++;
+                    chosen = 7;
+                }
+            }
+            else if (j == 5){
+                if (word == "Beatrice"){
+                    cowpopularity[0][0]++;
+                    if (cowpopularity[0][0] == 2) cowpopularity[0][2] = chosen;
+                    else cowpopularity[0][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 0;
+                    else cowpopularity[chosen][1] = 0;
+
+                }
+                else if (word == "Belinda"){
+                    cowpopularity[1][0]++;
+                    if (cowpopularity[1][0] == 2) cowpopularity[1][2] = chosen;
+                    else cowpopularity[1][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 1;
+                    else cowpopularity[chosen][1] = 1;
+                }
+                else if (word == "Bella"){
+                    cowpopularity[2][0]++;
+                    if (cowpopularity[2][0] == 2) cowpopularity[2][2] = chosen;
+                    else cowpopularity[2][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 2;
+                    else cowpopularity[chosen][1] = 2;
+                }
+                else if (word == "Bessie"){
+                    cowpopularity[3][0]++;
+                    if (cowpopularity[3][0] == 2) cowpopularity[3][2] = chosen;
+                    else cowpopularity[3][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 3;
+                    else cowpopularity[chosen][1] = 3;
+                }
+                else if (word == "Betsy"){
+                    cowpopularity[4][0]++;
+                    if (cowpopularity[4][0] == 2) cowpopularity[4][2] = chosen;
+                    else cowpopularity[4][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 4;
+                    else cowpopularity[chosen][1] = 4;
+                }
+                else if (word == "Blue"){
+                    cowpopularity[5][0]++;
+                    if (cowpopularity[5][0] == 2) cowpopularity[5][2] = chosen;
+                    else cowpopularity[5][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 5;
+                    else cowpopularity[chosen][1] = 5;
+                }
+                else if (word == "Buttercup"){
+                    cowpopularity[6][0]++;
+                    if (cowpopularity[6][0] == 2) cowpopularity[6][2] = chosen;
+                    else cowpopularity[6][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 6;
+                    else cowpopularity[chosen][1] = 6;
+                }
+                else if (word == "Sue"){
+                    cowpopularity[7][0]++;
+                    if (cowpopularity[7][0] == 2) cowpopularity[7][2] = chosen;
+                    else cowpopularity[7][1] = chosen;
+
+                    if (cowpopularity[chosen][0] == 2) cowpopularity[chosen][2] = 7;
+                    else cowpopularity[chosen][1] = 7;
+                }
+            }
+        }
+    }
+    for (int i= 0; i < 8; i++){
+        recursion(i);
+    }
+    for (int i = 0; i < 8; i++){
+        if (cows[i] == 0) cout << "Beatrice" << endl;
+        if (cows[i] == 1) cout << "Belinda" << endl;
+        if (cows[i] == 2) cout << "Bella" << endl;
+        if (cows[i] == 3) cout << "Bessie" << endl;
+        if (cows[i] == 4) cout << "Betsy" << endl;
+        if (cows[i] == 5) cout << "Blue" << endl;
+        if (cows[i] == 6) cout << "Buttercup" << endl;
+        if (cows[i] == 7) cout << "Sue" << endl;
+
+        if (cows[i] == 0) fout << "Beatrice" << endl;
+        if (cows[i] == 1) fout << "Belinda" << endl;
+        if (cows[i] == 2) fout << "Bella" << endl;
+        if (cows[i] == 3) fout << "Bessie" << endl;
+        if (cows[i] == 4) fout << "Betsy" << endl;
+        if (cows[i] == 5) fout << "Blue" << endl;
+        if (cows[i] == 6) fout << "Buttercup" << endl;
+        if (cows[i] == 7) fout << "Sue" << endl;
+
+    }
+}
+
+
+// YOU CAN USE NEXT_PERMUTATION
