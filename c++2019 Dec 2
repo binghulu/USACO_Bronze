@@ -1,0 +1,44 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main(){
+    ifstream fin("whereami.in");
+    ofstream fout("whereami.out");
+
+    int n;
+    bool work = false;
+    string word;
+    cin >> n >> word;
+    fin >> n >> word;
+
+    int startpos;
+    for (int i = 1; i <= n; i++){
+        work = false;
+        for (int j = 0; j < n-i+1; j++){
+            work = false;
+            startpos = j;
+            for (int k = startpos+1; k < n-i+1; k++){
+                work = false;
+                if (word[k] == word[startpos]){
+                    work = true;
+                    for (int m = 1; m < i; m++){
+                        if (word[k+m] != word[startpos+m]){
+                            work = false;
+                            break;
+                        }
+                        else work = true;
+                    }
+                }
+                if (work == true) break;
+            }
+            if (work  == true) break;
+        }
+        if (work == false){
+            cout << i;
+            fout << i;
+            return 0;
+        }
+    }
+}
