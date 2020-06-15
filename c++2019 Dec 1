@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("gymnastics.in");
+    ofstream fout("gymnastics.out");
+
+    int K, N;
+    cin >> K >> N;
+    fin >> K >> N;
+    int session[K][N];
+    for (int i = 0; i < K; i++){
+        for (int j = 0; j < N; j++){
+            cin >> session[i][j];
+            fin >> session[i][j];
+        }
+    }
+    bool work = false;
+    int A, B;
+    int pairs = 0;
+    for (int i = 0; i < N-1; i++){
+        for (int j = i+1; j < N; j++){
+            A = session[0][i];
+            B = session[0][j];
+            for (int k = 1; k < K; k++){
+                work = false;
+                for (int m = 0; m < N; m++){
+                    if (session[k][m] == A){
+                        work = true;
+                        break;
+                    }
+                    else if (session[k][m] == B){
+                        work = false;
+                        break;
+                    }
+                }
+                if (work == false) break;
+            }
+            if (work == true){
+                cout << A << " " << B << endl;
+                pairs++;
+            }
+        }
+    }
+    cout << pairs;
+    fout << pairs;
+}
