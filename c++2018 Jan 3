@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main(){
+    ifstream fin("outofplace.in");
+    ofstream fout("outofplace.out");
+
+    int N;
+    cin >> N;
+    fin >> N;
+    vector<int> og(N);
+    vector<int> sorted(N);
+    for (int i = 0; i < N; i++){
+        cin >> og[i];
+        fin >> og[i];
+        sorted[i] = og[i];
+    }
+    sort(sorted.begin(), sorted.end());
+
+    int switches = 0;
+    for (int i = 0; i < N; i++){
+        if (og[i] != sorted[i]) switches++;
+    }
+    if (switches == 0){
+        cout << 0;
+        fout << 0;
+    }
+    else{
+        cout << switches-1;
+        fout << switches-1;
+    }
+
+
+
+}
