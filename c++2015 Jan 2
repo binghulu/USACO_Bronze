@@ -1,0 +1,60 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int main(){
+    ofstream fout ("cowroute.out");
+    ifstream fin ("cowroute.in");
+
+    int A, B, N;
+    fin >> A >> B >> N;
+
+    int startToMiddle[10000], middleToEnd[10000];
+    for (int i = 0; i < 10000; i++){
+        startToMiddle[i] = 1001;
+        middleToEnd[i] = 1001;
+    }
+    int cost, numStops, city;
+    int start, finish;
+
+    for (int i = 0; i < N; i++){
+        fin >> cost >> numStops;
+        int stops[500];
+        for (int j = 0; j < numStops; j++){
+            fin >> city;
+            stops[j] = city;
+            if (city == A) start = j;                               // Find the one where it would start
+            if (city == B) finish = j;
+        }
+        if (start != numStops - 1){
+            for (int j = start + 1; j < numStops; j++){
+                if (cost <= startToMiddle[stops[j]])
+                    startToMiddle[stops[j]] = cost;                 // If it is smaller then replace
+            }
+        }
+        if (finish != 0){
+            for (int j = 0; j < finish; j++){
+                if (cost <= middleToEnd[stops[j]])
+                    middleToEnd[stops[j]] = cost;
+            }
+        }
+    }
+
+    int leastcost = 2002;
+    for (int i = 0; i < 10000; i++){
+        if (i == B && startToMiddle[i] < leastcost){                                                        
+            leastcost = startToMiddle[i];
+            continue;
+        }
+        if (startToMiddle[i] != 1001 && middleToEnd[i] != 1001){
+            if (startToMiddle[i] + middleToEnd[i] <= leastcost && i == B) leastcost = startToMiddle[i];         // If it is one path only add once
+            else if (startToMiddle[i] + middleToEnd[i] <= leastcost)                                            // If it is nothing special
+                leastcost = startToMiddle[i] + middleToEnd[i];
+        }
+    }
+    if (leastcost == 2002)
+        fout << -1;
+    else
+        fout << leastcost;
+}
