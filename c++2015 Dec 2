@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ofstream fout("speeding.out");
+    ifstream fin("speeding.in");
+
+    int N, M;
+    cin >> N >> M;
+    fin >> N >> M;
+    int speedLimit[100], speed[100];
+    int x, y;
+    int start = 0;
+    for (int i = 0; i < N; i++){
+        cin >> x >> y;
+        fin >> x >> y;
+        for (int j = start; j < start + x; j++){
+            speedLimit[j] = y;
+        }
+        start += x;
+    }
+    start = 0;
+    for (int i = 0; i < M; i++){
+        cin >> x >> y;
+        fin >> x >> y;
+        for (int j = start; j < start + x; j++){
+            speed[j] = y;
+        }
+        start += x;
+    }
+    for (int i = 0; i < 100; i++){
+        cout << speed[i] << " ";
+    }
+    cout << endl;
+    for (int i = 0; i < 100; i++){
+        cout << speedLimit[i] << " ";
+    }
+    int maxOver = 0;
+    for (int i = 0; i < 100; i++){
+        if ((speed[i] > speedLimit[i]) && (speed[i] - speedLimit[i]) > maxOver)
+            maxOver = speed[i] - speedLimit[i];
+    }
+    cout << maxOver << endl;
+    fout << maxOver << endl;
+}
