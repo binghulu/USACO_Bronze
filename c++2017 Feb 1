@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("crossroad.in");
+    ofstream fout("crossroad.out");
+
+    int N;
+    cin >> N;
+    fin >> N;
+
+    int cows[100];
+    for (int i = 0; i <100; i++) cows[i] = -1;
+    int cow, side;
+    int crosses = 0;
+    for (int i = 0; i < N; i++){
+        cin >> cow >> side;
+        fin >> cow >> side;
+        if (cows[cow] == -1) cows[cow] = side;
+        else if (cows[cow] != side){
+            cows[cow] = side;
+            crosses++;
+        }
+    }
+    cout << crosses << endl;
+    fout << crosses << endl;
+}
