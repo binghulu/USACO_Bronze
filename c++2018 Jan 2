@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("lifeguards.in");
+    ofstream fout("lifeguards.out");
+
+    int N;
+    cin >> N; fin >> N;
+    int time[1001];
+    int startend[N][2];
+    for (int i = 0; i < 1001; i++) time[i] = 0;
+
+    int start, finish;
+    for (int i = 0; i < N; i++){
+        cin >> start >> finish;
+        fin >> start >> finish;
+        for (int j = start; j < finish; j++) time[j]++;
+        startend[i][0] = start;
+        startend[i][1] = finish;
+    }
+
+    int temp[1001];
+    int longestlength = 0;
+    int length = 0;
+    for (int i = 0; i < N; i++){
+        length = 0;
+        for (int j = 0; j < 1001; j++) temp[j] = time[j];
+        for (int j = startend[i][0]; j < startend[i][1]; j++) temp[j]--;
+        for (int j = 0; j < 1001; j++){
+            if (temp[j] > 0) length++;
+        }
+        if (length > longestlength) longestlength = length;
+    }
+    cout << longestlength;
+    fout << longestlength;
+}
