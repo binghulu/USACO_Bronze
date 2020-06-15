@@ -1,0 +1,67 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("reduce.in");
+    ofstream fout("reduce.out");
+
+    int N;
+    cin >> N;
+    fin >> N;
+    int xCor[N];
+    int yCor[N];
+    int sX = 40001, sY = 40001, mX = 0, mY = 0;
+    int ssX = 40001, ssY = 40001, smX = 0, smY = 0;
+    for (int i = 0; i < N; i++){
+        cin >> xCor[i] >> yCor[i];
+        fin >> xCor[i] >> yCor[i];
+
+        if (xCor[i] < sX){
+                ssX = sX;
+                sX = xCor[i];
+        }
+        else if (xCor[i] < ssX) ssX = xCor[i];
+
+        if (xCor[i] > mX){
+                smX = mX;
+                mX = xCor[i];
+        }
+        else if (xCor[i] > smX) smX = xCor[i];
+
+        if (yCor[i] < sY){
+                ssY = sY;
+                sY = yCor[i];
+        }
+        else if (yCor[i] < ssY) ssY = yCor[i];
+
+        if (yCor[i] > mY){
+                smY = mY;
+                mY = yCor[i];
+        }
+        else if (yCor[i] > smY) smY = yCor[i];
+
+        cout << "i= " << i << " " << sX << " " << ssX << " " << smX << " " << mX << endl;
+        cout << "i= " << i << " " << sY << " " << ssY << " " << smY << " " << mY << endl;
+    }
+
+    cout << sX << " " << ssX << " " << smX << " " << mX << endl;
+    cout << sY << " " << ssY << " " << smY << " " << mY << endl;
+
+    int tMinX, tMinY, tMaxX, tMaxY;
+    int sArea = (mX-sX)*(mY-sY);
+    for (int i = 0; i < N; i++){
+        tMinX = sX;
+        tMinY = sY;
+        tMaxX = mX;
+        tMaxY = mY;
+        if (xCor[i] == tMinX) tMinX = ssX;
+        if (xCor[i] == tMaxX) tMaxX = smX;
+        if (yCor[i] == tMinY) tMinY = ssY;
+        if (yCor[i] == tMaxY) tMaxY = smY;
+        if ((tMaxX-tMinX)*(tMaxY-tMinY) < sArea) sArea = (tMaxX-tMinX)*(tMaxY-tMinY);
+    }
+    cout << sArea << endl;
+    fout << sArea << endl;
+
+}
