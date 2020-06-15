@@ -1,0 +1,48 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+    ifstream fin("cowtip.in");
+    ofstream fout("cowtip.out");
+    int N;
+    cin >> N;
+    fin >> N;
+
+    int field[N][N];
+    string input;
+    for (int i = 0; i < N; i++){
+        cin >> input;
+        fin >> input;
+        for (int j = 0; j < N; j++){
+            field[i][j] = input[j] - '0';
+        }
+    }
+    for (int i = 0; i < N; i++){
+        for (int j = 0; j < N; j++){
+            cout << field[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+
+    int flip = 0;
+    for (int i = N-1; i >= 0; i--) {
+        for (int j = N-1; j >= 0; j--) {
+            if (field[i][j] == 1){
+                flip++;
+                cout << "flip at: " << i << " " << j << endl;
+                for (int k = 0; k <= i; k++){
+                    for (int l = 0; l <= j; l++){
+                        if (field[k][l] == 0) field[k][l] = 1;
+                        else field[k][l] = 0;
+                    }
+                }
+            }
+        }
+    }
+    cout << flip;
+    fout << flip;
+
+}
