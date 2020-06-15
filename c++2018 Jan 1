@@ -1,0 +1,35 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main(){
+
+    ifstream fin("billboard.in");
+    ofstream fout("billboard.out");
+
+    int x1l, y1l, x2l, y2l;
+    int x1f, y1f, x2f, y2f;
+
+    cin >> x1l >> y1l >> x2l >> y2l >> x1f >> y1f >> x2f >> y2f;
+    fin >> x1l >> y1l >> x2l >> y2l >> x1f >> y1f >> x2f >> y2f;
+
+    int area;
+    if (x1l >= x1f && x2l <= x2f && y1l >= y1f && y2l <= y2f) area = 0;
+    else if (x1l >= x2f || x2l <= x1f || y1l >= y2f || y2l <= y1f || (x2l >= x2f && x1l <= x1f) || (y2l >= y2f && y1l <= y1f)) area = abs(x2l-x1l)*abs(y2l-y1l);
+    else if (x1l >= x1f && x2l <= x2f){
+        if (y1l <= y1f && y2l <= y2f) area = (y1f-y1l)*(x2l-x1l);
+        else if (y1l >= y1f && y2l >= y2f) area = (y2l-y2f)*(x2l-x1l);
+        else area = (y1f-y1l)*(x2l-x1l)+(y2l-y2f)*(x2l-x1l);
+    }
+    else if (y1l >= y1f && y2l <= y2f){
+        if (x1l <= x1f && x2l <= x2f) area = (x1f-x1l)*(y2l-y1l);
+        else if (x1l >= x1f && x2l >= x2f) area = (x2l-x2f)*(y2l-y1l);
+        else area = (x1f-x1l)*(y2l-y1l)+(x2l-x2f)*(y2l-y1l);
+    }
+    else area = (x2l-x1l)*(y2l-y1l);
+
+    cout << area;
+    fout << area;
+
+
+}
